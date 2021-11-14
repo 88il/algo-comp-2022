@@ -108,12 +108,12 @@ def run_matching(scores: List[List], gender_id: List, gender_pref: List) -> List
         current_proposer = int(current_proposer % n/2)
     
                 
-    # Check whether matching is stable (could define separate function)
-    is_stable_matching = True
-    for i in range(n):
-        current_match = temp_match[i]
-        for j in range(n):
-            if (preference_list[i][j][1] = current_match):
+    # Check whether matching is stable (could define separate function) -- INCOMPLETE
+    #is_stable_matching = True
+    #for i in range(n):
+        #current_match = temp_match[i]
+        #for j in range(n):
+            #if (preference_list[i][j][1] = current_match):
     
     
     # Transfer temp_match to matches
