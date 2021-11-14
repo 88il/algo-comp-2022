@@ -22,6 +22,104 @@ def run_matching(scores: List[List], gender_id: List, gender_pref: List) -> List
         - This is by no means an exhaustive list, feel free to reach out to us for more help!
     """
     matches = [()]
+    
+    # Number of people
+    n = len(scores)
+    
+    # Set score of incompatible gender identity/preference pairs to 0
+    for i in range(n):
+        for j in range(i+1, n):
+            if (gender_id[i] != gender_pref[j]):
+                scores[i][j] = 0
+                
+    # Make preference list for each person. List of n lists of tuples list i is: (compatibility score (i, j), j) where i is fixed
+    preference_list = [[()]]
+    
+    # For ith person
+    for i in range(n):
+        current_preference_list = [()]
+        # Make list of tuples for compatibility scores between (i, j)
+        for j in range(n):
+            current_preference_list.append((scores[i][j], j))
+        # Remove first empty tuple because apparently appending tuples appends to a list that already has an empty tuple?
+        current_preference_list.pop(0)
+        
+        preference_list.append(current_preference_list)
+        
+    
+    # Remove first empty list of tuples because apparently it appends to a list that already has an empty list of tuples?
+    preference_list.pop(0)
+    
+    # Sort each preference list greatest to least score
+    for i in range(n):
+        preference_list[i].sort(reverse = True)
+    
+    # Proposer has proposed to 1st to xth choice where x is the element in this list
+    last_person_proposed_to = [int(n/2)] * int(n/2)
+    
+    # List indicating index of match. Index is -1 if unmatched (free)
+    temp_match = [-1] * n
+    
+    # 0th person begins. 0 to n/2 propose, n/2 to n receive
+    current_proposer = 0
+    
+    # Keep making pairs until no one is free
+    while (temp_match.count(-1) != 0):
+        # If proposer is free
+        if(temp_match[current_proposer] == -1):
+            x = last_person_proposed_to[current_proposer]
+            
+            over = False
+            while (over != True):
+                for i in (x, n):
+                    if(over != True):
+                    
+                        # If receiver is free, match
+                        if (temp_match[i] == -1):
+                            temp_match[i] = current_proposer
+                            temp_match[current_proposer] = i
+                            # Increment last_person_proposed_to
+                            last_person_proposed_to[current_proposer] += 1
+                            over = True
+                        
+                        # Else if receiver prefers proposer to current match, match them and free current match
+                        elif (scores[i][current_proposer] > scores[i][temp_match[i]]):
+                            # Free current match
+                            current_match = temp_match[i]
+                            temp_match[current_match] = -1
+                            # Pair receiver and proposer
+                            temp_match[i] = current_proposer
+                            temp_match[current_proposer] = i
+                            # Increment last_person_proposed_to
+                            last_person_proposed_to[current_proposer] += 1
+                            over = True
+                            
+                        # Else receiver rejects m (m still free)
+                        else:
+                            continue
+                        
+                        print(temp_match)
+            
+        # Move on to next proposer, make sure index goes from (n/2 - 1) to 0 at edge case when looping back around
+        current_proposer += 1
+        current_proposer = int(current_proposer % n/2)
+    
+                
+    # Check whether matching is stable (could define separate function)
+    is_stable_matching = True
+    for i in range(n):
+        current_match = temp_match[i]
+        for j in range(n):
+            if (preference_list[i][j][1] = current_match):
+    
+    
+    # Transfer temp_match to matches
+    for i in range(n):
+        matches.append((i, temp_match[i]))
+                    
+            
+    
+    
     return matches
 
 if __name__ == "__main__":
