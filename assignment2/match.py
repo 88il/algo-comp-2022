@@ -44,6 +44,7 @@ def run_matching(scores: List[List], gender_id: List, gender_pref: List) -> List
         # Remove first empty tuple because apparently appending tuples appends to a list that already has an empty tuple?
         current_preference_list.pop(0)
         
+        # Checked preference list, this is correct
         preference_list.append(current_preference_list)
         
     
@@ -68,6 +69,8 @@ def run_matching(scores: List[List], gender_id: List, gender_pref: List) -> List
         # If proposer is free
         if(temp_match[current_proposer] == -1):
             x = last_person_proposed_to[current_proposer]
+            
+            # PROBLEM IS PROBABLY HERE
             
             over = False
             while (over != True):
